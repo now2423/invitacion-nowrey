@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nowrey | Mis 18</title>
+
+<style>
+:root {
+  --ivory: #fff8f0;
+  --pink: #ead0d0;
+  --rose: #b76d7a;
+  --wine: #641c32;
+  --gold: #bd9a63;
+  --ink: #492632;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button { font: inherit; }
+
+/* SOBRE DE BIENVENIDA */
+#opening {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 20% 20%, #fffdf7, transparent 50%),
+    linear-gradient(135deg, #f6e5e1, #e4c0c4 55%, #f7e8df);
+  transition: opacity 1s ease, visibility 1s ease;
+}
+
+#opening::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid #bd9a6380;
+  pointer-events: none;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 36px;
+  padding: 0 20px;
+}
+
+.intro small {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--wine);
+  font-size: 10px;
+}
+
+.intro h1 {
+  font-size: clamp(35px, 9vw, 52px);
+  font-weight: normal;
+  font-style: italic;
+  margin: 15px 0 8px;
+  color: var(--wine);
+}
+
+.intro p {
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 10px;
+}
+
+.envelope-button {
+  position: relative;
+  width: min(310px, 80vw);
+  height: 205px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 900px;
+  filter: drop-shadow(0 18px 18px #5c263020);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.envelope {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: #fdf4e9;
+  border: 1px solid #d9bca4;
+}
+
+.letter {
+  position: absolute;
+  left: 8%;
+  top: 10%;
+  width: 84%;
+  height: 80%;
+  background: #fffdf8;
+  border: 1px solid #e6d4c2;
+  transition: transform 1s ease;
+}
+
+.letter::before {
+  content: "N";
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 45px;
+  font-style: italic;
+  color: var(--wine);
+}
+
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #f7e6dc, #e9c9c4);
+  clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+  border-bottom: 1px solid #d4ada6;
+}
+
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, #fff2e7, #dcb3b2);
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  transform-origin: top center;
+  transition: transform .8s ease;
+  z-index: 3;
+}
+
+.seal {
+  position: absolute;
+  z-index: 4;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 57px;
+  height: 57px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #f8e7ce;
+  font-size: 28px;
+  font-style: italic;
+  background:
+    radial-gradient(circle at 32% 27%, #a84a60, #701c36 70%);
+  border: 2px solid #bd8b69;
+  box-shadow: 0 3px 8px #57203445;
+  transition: opacity .4s ease, transform .5s ease;
+}
+
+.envelope-button:hover .seal {
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+#opening.opening .envelope-flap {
+  transform: rotateX(180deg);
+}
+
+#opening.opening .seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+#opening.opening .letter {
+  transform: translateY(-100px);
+}
+
+#opening.gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.tap-note {
+  margin-top: 30px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--wine);
+  animation: breathe 2s infinite;
+}
+
+@keyframes breathe {
+  50% { opacity: .45; }
+}
+
+/* INVITACIÓN */
+#invitation {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+#invitation.visible { opacity: 1; }
+
+.hero {
+  min-height: 94svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 65px 22px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 15% 10%, #fffefa, transparent 45%),
+    linear-gradient(145deg, #f4e0dd, #fff8f0 55%, #e9c9ca);
+}
+
+.frame {
+  position: absolute;
+  inset: 18px;
+  border: 1px solid #bd9a6380;
+  pointer-events: none;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font: 10px Arial, sans-serif;
+  color: var(--wine);
+}
+
+.hero h1 {
+  font-size: clamp(55px, 14vw, 86px);
+  font-weight: normal;
+  font-style: italic;
+  line-height: .95;
+  margin: 28px 0 12px;
+  color: var(--wine);
+}
+
+.hero h2 {
+  font-size: 15px;
+  letter-spacing: 7px;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin: 18px 0 28px;
+}
+
+.gold-line {
+  width: 75px;
+  height: 1px;
+  background: var(--gold);
+  margin: 18px auto;
+}
+
+.hero .date {
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+.hero .sub {
+  font-size: 13px;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+section.content {
+  padding: 75px 24px;
+  text-align: center;
+  max-width: 680px;
+  margin: auto;
+}
+
+section.rose-bg {
+  max-width: none;
+  background: #f0dddd;
+}
+
+section.rose-bg .inner {
+  max-width: 620px;
+  margin: auto;
+}
+
+.section-label {
+  font: 10px Arial, sans-serif;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+
+.content h2 {
+  font-weight: normal;
+  font-style: italic;
+  font-size: clamp(30px, 7vw, 42px);
+  color: var(--wine);
+  margin: 17px 0;
+}
+
+.message {
+  font-size: 17px;
+  line-height: 1.9;
+  max-width: 440px;
+  margin: 24px auto 0;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 5vw, 30px);
+  margin-top: 30px;
+}
+
+.time {
+  min-width: 52px;
+}
+
+.time strong {
+  display: block;
+  font-size: clamp(26px, 7vw, 38px);
+  font-weight: normal;
+  color: var(--wine);
+}
+
+.time span {
+  font: 9px Arial, sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.detail {
+  margin: 30px 0;
+}
+
+.detail strong {
+  display: block;
+  font-size: 20px;
+  font-weight: normal;
+  color: var(--wine);
+  margin-bottom: 9px;
+}
+
+.detail p {
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 14px 23px;
+  border: 1px solid var(--wine);
+  color: var(--wine);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font: 10px Arial, sans-serif;
+  transition: background .2s, color .2s;
+}
+
+.button:hover {
+  background: var(--wine);
+  color: white;
+}
+
+.closing {
+  background: var(--wine);
+  color: var(--ivory);
+  padding: 70px 20px;
+  text-align: center;
+}
+
+.closing h2 {
+  font-size: 37px;
+  font-weight: normal;
+  font-style: italic;
+  margin: 15px 0;
+}
+
+.closing p {
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.closing .gold-line {
+  background: #d4b77d;
+}
+
+footer {
+  background: var(--wine);
+  text-align: center;
+  padding: 0 20px 24px;
+  font: 9px Arial, sans-serif;
+  letter-spacing: 2px;
+  color: #e8ccd1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="opening">
+  <div class="intro">
+    <small>Una celebración especial</small>
+    <h1>Una invitación para ti</h1>
+    <p>Estás invitado a mis 18</p>
+  </div>
+
+  <button class="envelope-button" id="openButton"
+          aria-label="Abrir invitación">
+    <div class="envelope">
+      <div class="envelope-back"></div>
+      <div class="letter"></div>
+      <div class="envelope-front"></div>
+      <div class="envelope-flap"></div>
+      <div class="seal">N</div>
+    </div>
+  </button>
+
+  <div class="tap-note">Toca el sello para abrir</div>
+</div>
+
+<main id="invitation">
+
+  <header class="hero">
+    <div class="frame"></div>
+    <div class="eyebrow">Con mucha ilusión te invito a celebrar</div>
+    <h1>Nowrey</h1>
+    <div class="gold-line"></div>
+    <h2>Mis 18 años</h2>
+    <p class="date">14 · NOVIEMBRE · 2026</p>
+    <p class="sub">Una noche para recordar</p>
+    <a class="button" href="#detalles">Descubrir invitación ↓</a>
+  </header>
+
+  <section class="content">
+    <div class="section-label">La cuenta regresiva</div>
+    <h2>Falta muy poco</h2>
+    <p class="message">
+      Cada momento especial se vuelve más bonito cuando
+      lo compartimos con las personas que queremos.
+    </p>
+
+    <div class="countdown">
+      <div class="time"><strong id="days">00</strong><span>Días</span></div>
+      <div class="time"><strong id="hours">00</strong><span>Horas</span></div>
+      <div class="time"><strong id="minutes">00</strong><span>Minutos</span></div>
+      <div class="time"><strong id="seconds">00</strong><span>Segundos</span></div>
+    </div>
+  </section>
+
+  <section class="content rose-bg">
+    <div class="inner">
+      <div class="section-label">Un momento especial</div>
+      <h2>Me encantaría compartirlo contigo</h2>
+      <div class="gold-line"></div>
+      <p class="message">
+        Hay momentos que queremos guardar para siempre,
+        y cumplir 18 es uno de ellos. Me encantaría
+        compartir esta noche tan especial contigo.
+      </p>
+    </div>
+  </section>
+
+  <section class="content" id="detalles">
+    <div class="section-label">Reserva la fecha</div>
+    <h2>La celebración</h2>
+
+    <div class="detail">
+      <strong>♡ Fecha</strong>
+      <p>Sábado 14 de noviembre de 2026</p>
+    </div>
+
+    <div class="detail">
+      <strong>♡ Hora</strong>
+      <p>8:00 de la noche</p>
+    </div>
+
+    <div class="detail">
+      <strong>♡ Lugar</strong>
+      <p>Jardín Los Encinos<br>Toluca, Estado de México</p>
+      <a class="button"
+         href="https://www.google.com/maps/search/?api=1&query=Jardin+Los+Encinos+Toluca"
+         target="_blank" rel="noopener">
+         Ver ubicación ↗
+      </a>
+    </div>
+  </section>
+
+  <section class="content rose-bg">
+    <div class="inner">
+      <div class="section-label">Código de vestimenta</div>
+      <h2>Elegante</h2>
+      <div class="gold-line"></div>
+      <p class="message">
+        Una ocasión especial merece un toque especial.
+        Ven con tu estilo y acompáñame en esta noche.
+      </p>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="eyebrow" style="color:#e6c99a">Será un placer tenerte ahí</div>
+    <div class="gold-line"></div>
+    <h2>Gracias por ser parte<br>de este momento</h2>
+    <p>CON CARIÑO, NOWREY</p>
+    <div style="font-size:24px;color:#d4b77d;margin-top:22px">✧</div>
+  </section>
+
+  <footer>NOWREY · MIS 18 · 2026</footer>
+</main>
+
+<script>
+const opening = document.getElementById("opening");
+const invitation = document.getElementById("invitation");
+const openButton = document.getElementById("openButton");
+let opened = false;
+
+openButton.addEventListener("click", () => {
+  if (opened) return;
+  opened = true;
+
+  opening.classList.add("opening");
+
+  setTimeout(() => {
+    opening.classList.add("gone");
+    invitation.classList.add("visible");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, 1100);
+});
+
+const partyDate = new Date(2026, 10, 14, 20, 0, 0);
+
+function updateCountdown() {
+  let remaining = partyDate.getTime() - Date.now();
+  if (remaining < 0) remaining = 0;
+
+  const days = Math.floor(remaining / 86400000);
+  const hours = Math.floor((remaining % 86400000) / 3600000);
+  const minutes = Math.floor((remaining % 3600000) / 60000);
+  const seconds = Math.floor((remaining % 60000) / 1000);
+
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+  document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+  document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
